@@ -1,0 +1,2 @@
+class EmptyCreditOrGradeException(Exception):
+    pass
