@@ -38,16 +38,16 @@ Programozási nyelv: Python
 
 Tárgy név;kredit;jegy
 
-(Ne legyen benne üres sor! Dolgozok a hiba kijavításán.)
+(Lehet benne üres sor.)
 
 ### Parancssori argumentummal
 
 `python .\src\main.py "fajlnev"`
 
-Add meg a fájl nevét!
+Add meg a fájl nevét (kiterjesztés nélkül)!
 
 ### Konzol
 
 `python .\src\main.py`
 
-Beolvashatsz fájlból vagy megadhatod konzolban az adaotokat
+Beolvashatsz fájlból (ugyanúgy kiterjesztés nélkül kell megadni) vagy megadhatod konzolban az adaotokat.
