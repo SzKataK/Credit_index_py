@@ -44,17 +44,24 @@ def counting(data: list) -> None:
 # get input
 def read_from_file(filename: str) -> list:
     data = []
+
+    if filename.endswith(".txt"):
+        filename = filename.replace(".txt", "")
     filename = "grades/" + filename + ".txt"
+
     try:
         with open(filename, "r", encoding="utf8") as file:
-            readin = file.read().split('\n')
-            for i in readin:
-                if i != "":
-                    tmp = i.split(";")
+            input = file.read().split('\n')
+            for i in input:
+                if (i.strip()):
+                    tmp = i.split(';')
 
-                    if tmp[1] == "" or tmp[2] == "":
+                    if (len(tmp) < 3):
                         raise e.EmptyCreditOrGradeException
 
+                    if (not tmp[1].strip() or not tmp[2].strip()):
+                        raise e.EmptyCreditOrGradeException
+                    
                     credit = int(tmp[1])
                     grade = int(tmp[2])
 
@@ -70,7 +77,7 @@ def read_from_file(filename: str) -> list:
         print("Hiba: Hiányzó kredit vagy jegy (read_from_file)")
         print("Ellenőrizd, hogy beírtad-e az összes jegyet és kreditet!")
     except:
-        print("Egyéb hiba (read_from_file)")
+        print("Hiba: Egyéb hiba (read_from_file)")
     return data
 
 def read_user_input() -> list:
@@ -94,16 +101,23 @@ def read_user_input() -> list:
 
 # doc format
 def check_format(filename: str) -> bool:
-    try:    
-        filename = "grades/" + filename + ".txt"
+    if filename.endswith(".txt"):
+        filename = filename.replace(".txt", "")
+    filename = "grades/" + filename + ".txt"
+
+    try:
         with open(filename, "r", encoding="utf8") as file:
-            readin = file.read().split('\n')
-            for r in readin:
-                tmp = r.split(';')
-                if len(tmp) == 1:
-                    return False
+            input = file.read().split('\n')
+            for i in input:
+                if (i.strip()):
+                    tmp = i.split(';')
+                    if (len(tmp) < 3):
+                        raise e.EmptyCreditOrGradeException
     except FileNotFoundError:
         print("Hiba: A megadott fájl nem található (check_format)")
+        return False
+    except e.EmptyCreditOrGradeException:
+        print("Hiba: fomátum hiba (check_format)")
         return False
     except:
         print("Hiba: fomátum hiba (check_format)")
@@ -114,13 +128,14 @@ def modify(filename: str):
     content = []
     filename = "grades/" + filename + ".txt"
     with open(filename, "r", encoding="utf8") as file:
-        readin = file.read().split('\n')
-        for r in readin:
-            r = r.rstrip()
-            r = r.replace('\t', ';')
-            tmp = r.split(';')[1:3] + [""]
-            r = ';'.join(tmp)
-            content.append(r)
+        input = file.read().split('\n')
+        for r in input:
+            if (r.strip()):
+                r = r.rstrip()
+                r = r.replace('\t', ';')
+                tmp = r.split(';')[1:3] + [""]
+                r = ';'.join(tmp)
+                content.append(r)
     
     with open(filename, "w", encoding="utf8") as file:
         file.write('\n'.join(content))
